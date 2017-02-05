@@ -15,6 +15,16 @@
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="WakeupPlugin">
+        <param name="ios-package" value="WakeupPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Vibration">
+        <param name="ios-package" value="CDVVibration" />
+    </feature>
+    <feature name="SleepTimerPlugin">
+        <param name="ios-package" value="SleepTimerPlugin" />
+    </feature>
     <name>WakeMeUp</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -45,8 +55,4 @@
     <preference name="PageLength" value="0" />
     <preference name="PaginationBreakingMode" value="page" />
     <preference name="PaginationMode" value="unpaginated" />
-    <feature name="WakeupPlugin">
-        <param name="ios-package" value="WakeupPlugin" />
-        <param name="onload" value="true" />
-    </feature>
 </widget>

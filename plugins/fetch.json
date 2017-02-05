@@ -15,5 +15,40 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-vibration": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-vibration"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.uniclau.alarmplugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/uniclau/AlarmPlugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "org.nypr.cordova.sleeptimerplugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wnyc/cordova-plugin-sleeptimer.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "de.schchr.cordova.plugin.timers": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/schchr/cordova-plugin-timers.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

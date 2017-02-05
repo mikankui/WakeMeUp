@@ -8,6 +8,18 @@
         <param name="android-package" value="org.nypr.cordova.wakeupplugin.WakeupPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Vibration">
+        <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
+    </feature>
+    <feature name="AlarmPlugin">
+        <param name="android-package" value="com.uniclau.alarmplugin.AlarmPlugin" />
+    </feature>
+    <feature name="SleepTimerPlugin">
+        <param name="android-package" value="org.nypr.cordova.sleeptimerplugin.SleepTimerPlugin" />
+    </feature>
+    <feature name="TimerPlugin">
+        <param name="android-package" value="de.schchr.cordova.plugin.timers.TimerPlugin" />
+    </feature>
     <name>WakeMeUp</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

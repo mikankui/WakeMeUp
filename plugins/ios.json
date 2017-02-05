@@ -12,6 +12,18 @@
         },
         "org.nypr.cordova.wakeupplugin": {
             "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "com.uniclau.alarmplugin": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "org.nypr.cordova.sleeptimerplugin": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "de.schchr.cordova.plugin.timers": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
         }
     },
     "dependent_plugins": {}
