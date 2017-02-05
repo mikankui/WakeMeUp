@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="de.schchr.cordova.plugin.timers"
+        version="0.2">
+
+    <name>Timers</name>
+
+    <description></description>
+
+    <repo>https://github.com/schchr/cordova-plugin-timers.git</repo>
+
+    <keywords></keywords>
+
+    <license>MIT</license>
+
+    <author>Christian Schneider</author>
+
+    <!-- cordova -->
+    <engines>
+        <engine name="cordova" version=">=3.6.0" />
+    </engines>
+
+    <!-- js -->
+
+    <js-module src="www/TimerPlugin.js" name="TimerPlugin">
+        <clobbers target="cordova.plugins.TimerPlugin" />
+        <clobbers target="plugin.TimerPlugin" />
+    </js-module>
+
+
+    <!-- android -->
+    <platform name="android">
+
+        <source-file
+                src="src/android/TimerPlugin.java"
+                target-dir="src/de/schchr/cordova/plugin/timers" />
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="TimerPlugin">
+                <param name="android-package" value="de.schchr.cordova.plugin.timers.TimerPlugin"/>
+            </feature>
+        </config-file>
+
+    </platform>
+
+</plugin>
