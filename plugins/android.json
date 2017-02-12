@@ -24,6 +24,9 @@
         },
         "de.schchr.cordova.plugin.timers": {
             "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "cordova-plugin-WakeUpMeTimer": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
         }
     },
     "dependent_plugins": {}
