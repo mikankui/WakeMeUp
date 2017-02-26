@@ -39,8 +39,20 @@
     </head>
     <body>
         <div class="app">
-            <h1>WakeMeUp</h1>
-            <label id="settime">時間を選択してください。</label>
+            <div class="title">Wake Me Up (5) min !</div>
+            <label class="timer" id="settime">時間を選択してください。</label>
+            <ul class="rist-menu" id="list1">
+                <!-- idの形式は必ず **min であることが前提 !-->
+                <li class="list1line" id="5min"> <a href="#">5 </a></li>
+                <li class="list1line" id="10min"><a href="#">10</a></li>
+                <li class="list1line" id="15min"><a href="#">15</a></li>
+                <li class="list1line" id="20min"><a href="#">20</a></li>
+                <li class="list1line" id="25min"><a href="#">25</a></li>
+                <li class="list1line" id="30min"><a href="#">30</a></li>
+                <li class="list1line" id="stop"><a href="#">STOP</a></li>
+            </ul>
+
+            <!--
             <div class="bottunline">
                 <div class="site-logo" id="10min">
                     <div class="site-info">
@@ -72,6 +84,7 @@
 
             </div>
         </div>
+        !-->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>

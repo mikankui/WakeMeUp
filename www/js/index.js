@@ -27,15 +27,31 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('10min');
         this.receivedEvent('5min');
-        this.receivedEvent('1min');
+        this.receivedEvent('10min');
+        this.receivedEvent('15min');
+        this.receivedEvent('20min');
+        this.receivedEvent('25min');
+        this.receivedEvent('30min');
         this.receivedEvent('stop');
+
+        // 通知の権限
+        cordova.plugins.notification.local.registerPermission(function() {
+            console.log("Permitted.");
+        });
+
+        cordova.plugins.notification.local.hasPermission(function (granted) {
+             console.log("Permitted. "+granted);
+        });
+
+        //background mode on
+        cordova.plugins.backgroundMode.enable();
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 
+        console.log("ID: "+id);
         var button = document.getElementById(id);
 
         button.addEventListener("click", function() {
@@ -43,49 +59,72 @@ var app = {
             //add setInterval ID
             //localStorage.setItem("TIMER_FLAGS",JSON.stringify({}));
             //console.log('wakeup pushed ' +JSON.stringify(TIMER_FLAGS));
-            var settingtime = document.getElementById("settime");
 
-/*
-            // example of a callback method
-            var successCallback = function(result) {
-                console.log('SUCCESS');
-                var settingtime = document.getElementById("settime");
-                if (result.type==='wakeup') {
-                    var alarmDate = new Date();
-                    settingtime.innerText=alarmDate;
-                    console.log('wakeup alarm detected--' + result.extra);
-                } else if(result.type==='set'){
-                    console.log('wakeup alarm set--' + result);
-                } else {
-                    var alarmDate = new Date();
-                    settingtime.innerText=alarmDate;
-                    console.log('wakeup unhandled type (' + result.type + ')');
+            // ローカルストレージから実行中フラグ(interval ID)を取得
+            var LOCALSTORAGE_TIMER_FLAGS=localStorage.getItem("TIMER_FLAGS");
+
+            if(id=='stop'　&& LOCALSTORAGE_TIMER_FLAGS !== undefined){
+                console.log("STOP");
+                var TIMER_FLAGS= JSON.parse(LOCALSTORAGE_TIMER_FLAGS);
+                console.log("call cleraAllTimer "+TIMER_FLAGS);
+
+                // reset  all interval
+                for(key in TIMER_FLAGS) { // 配列の長さ分の繰り返し
+                    clearInterval(TIMER_FLAGS[key]);
+                    console.log("clear interval ID : "+TIMER_FLAGS[key]);
                 }
-            }; 
 
-            var errorCallback = function(result) {
+                // ローカルストレージから実行中フラグ(interval ID)を削除
+                localStorage.removeItem("TIMER_FLAGS");
                 var settingtime = document.getElementById("settime");
-                //var alarmDate = new Date();
-                settingtime.innerText="ERROR";
-                console.log('ERROR');
+                settingtime.innerHTML = "時間を選択してください。";
+
+            // else, once stop all timer, and add new timmer
+            }else if(LOCALSTORAGE_TIMER_FLAGS == undefined){
+                var alarmDate = new Date();
+                //idの形式は必ず **min であることが前提
+                var alermMin = Number(id.replace( /min/g , "" ));
+                alarmDate.setMinutes(alarmDate.getMinutes()+alermMin);
+                var alarmTime=alermMin*60*1000;
+
+                // 画面の実行時間を１秒ごとに更新
+                var intervalID = setInterval(function(){showCountdown(alarmDate)},1000);
+
+                // ローカルストレージに実行中フラグ(interval ID)を登録
+                var TIMER_FLAGS = {intervalID:intervalID};
+                console.log(JSON.stringify(TIMER_FLAGS));
+                localStorage.setItem("TIMER_FLAGS",JSON.stringify(TIMER_FLAGS));
+
+                // 目覚まし時間を設定
+                var now             = new Date().getTime(),
+                _alarmTime_sec_from_now = new Date(now + alarmTime);
+
+                cordova.plugins.notification.local.schedule({
+                    text: "Delayed Notification",
+                    at: _alarmTime_sec_from_now,
+                    led: "FF0000",
+                    sound: null
+                });
+
+                //show message when setting schedule
+                cordova.plugins.notification.local.on("schedule", function(notification) {
+                    navigator.vibrate(100);
+                }, this);
+
+                //for background
+                cordova.plugins.backgroundMode.onactivate = function() { 
+                    //show message when reach time
+                    cordova.plugins.notification.local.on("trigger", function(notification) {
+                        navigator.vibrate(5000);
+                    }, this);
+                }
+
+                cordova.plugins.notification.local.on('click', function (notification) {
+                    showToast('clicked: ' + notification.id);
+                }, this);
             }
 
-            // set wakeup timer
-            window.wakeuptimer.wakeup(
-                successCallback,  
-                errorCallback, 
-                // a list of alarms to set
-                {
-                        alarms : [{
-                            type : 'onetime',
-                            time : { hour : 0, minute : 1 },
-                            extra : { message : 'json containing app-specific information to be posted when alarm triggers' }, 
-                            message : 'Alarm has expired!'
-                    }] 
-                }
-            );
-*/
-
+            var settingtime = document.getElementById("settime");
             var showCountdown =function(alarmDate) {
                 // 現在日時を数値(1970-01-01 00:00:00からのミリ秒)に変換
                 console.log(alarmDate);
@@ -100,7 +139,8 @@ var app = {
                 var dlHour = alarmDate.getHours();
                 var dlMin = alarmDate.getMinutes();
                 var dlSec = alarmDate.getSeconds();
-                var msg1 = "期限の<span>" + dlYear + "/" + dlMonth + "/" + dlDate + " " + dlHour + ":" + dlMin + ":" + dlSec;
+                //var msg1 = "期限の<span>" + dlYear + "/" + dlMonth + "/" + dlDate + " " + dlHour + ":" + dlMin + ":" + dlSec;
+                var msg1 = "期限の<span>" + dlHour + ":" + dlMin + ":" + dlSec;
 
                 // 引き算して日数(ミリ秒)の差を計算
                 var diff2Dates = dnumTarget - dnumNow;
@@ -117,7 +157,8 @@ var app = {
                 var dMin = diff2Dates / ( 1000 * 60 );   // 分
                 diff2Dates = diff2Dates % ( 1000 * 60 );
                 var dSec = diff2Dates / 1000;   // 秒
-                var msg2 = Math.floor(dDays) + "日" + Math.floor(dHour) + "時間" + Math.floor(dMin) + "分" + Math.floor(dSec) + "秒";
+                //var msg2 = Math.floor(dDays) + "日" + Math.floor(dHour) + "時間" + Math.floor(dMin) + "分" + Math.floor(dSec) + "秒";
+                var msg2 = Math.floor(dMin) + "分" + Math.floor(dSec) + "秒";
 
                 // 表示文字列の作成
                 var msg;
@@ -138,106 +179,12 @@ var app = {
             var clearAllTimer = function(){
                 var TIMER_FLAGS= JSON.parse(localStorage.getItem("TIMER_FLAGS"));
                 console.log("call cleraAllTimer "+JSON.stringify(TIMER_FLAGS));
-                // 1秒ごとに実行
-                /*
-                plugin.TimerPlugin.addInterval(
-                    showCountdown(alarmDate),
-                    1000,
-                    // SUCCESS
-                    function(){
-                        console.log("TimerPlugin SUCCESS");
-                    }, 
-                    // ERROR
-                    function(){
-                        console.log("TimerPlugin ERROR");
-                    }
-                );
-                */
 
                 // reset  all interval
                 for(key in TIMER_FLAGS) { // 配列の長さ分の繰り返し
                     clearInterval(TIMER_FLAGS[key]);
                     console.log("clear interval ID : "+TIMER_FLAGS[key]);
                 }
-            }
-
-            var alarmDate = new Date();
-            var alarmTIme = 10000;
-            if(id=='10min'){    
-                //alarmDate.setSeconds(alarmDate.getSeconds() + 10);
-                alarmDate.setMinutes(alarmDate.getMinutes()+10);
-                alarmTime=10*60*1000;
-            }else if(id=='5min'){
-                //alarmDate.setSeconds(alarmDate.getSeconds() + 5);
-                alarmDate.setMinutes(alarmDate.getMinutes()+5);
-                alarmTime=5*60*1000;
-            }else if(id=='1min'){
-                //alarmDate.setSeconds(alarmDate.getSeconds() + 1);
-                alarmDate.setMinutes(alarmDate.getMinutes()+1);
-                alarmTime=1*60*1000;
-            }
-            
-            // if push STOP button, then clear all timmer
-            var LOCALSTORAGE_TIMER_FLAGS=localStorage.getItem("TIMER_FLAGS");
-            if(LOCALSTORAGE_TIMER_FLAGS !== undefined){
-                var TIMER_FLAGS= JSON.parse(LOCALSTORAGE_TIMER_FLAGS);
-                console.log("call cleraAllTimer "+TIMER_FLAGS);
-                // 1秒ごとに実行
-                /*
-                plugin.TimerPlugin.addInterval(
-                    showCountdown(alarmDate),
-                    1000,
-                    // SUCCESS
-                    function(){
-                        console.log("TimerPlugin SUCCESS");
-                    }, 
-                    // ERROR
-                    function(){
-                        console.log("TimerPlugin ERROR");
-                    }
-                );
-                */
-
-                // reset  all interval
-                for(key in TIMER_FLAGS) { // 配列の長さ分の繰り返し
-                    clearInterval(TIMER_FLAGS[key]);
-                    console.log("clear interval ID : "+TIMER_FLAGS[key]);
-                }
-            }
-
-            if(id=='stop'){
-                console.log("STOP");
-                var settingtime = document.getElementById("settime");
-                settingtime.innerHTML = "時間を選択してください。";
-            // else, once stop all timer, and add new timmer
-            }else{
-                var intervalID = setInterval(function(){showCountdown(alarmDate)},1000);
-                setTimeout(function() {
-                    //navigator.vibrate(1000);
-                    navigator.notification.vibrate([1000,100,1000,100,1000,100,1000,100]);
-                    //navigator.vibrate([100,100,100,100,100,100,100,100]);
-                }, alarmTime);
-                var TIMER_FLAGS = {intervalID:intervalID};
-                console.log(JSON.stringify(TIMER_FLAGS));
-                localStorage.setItem("TIMER_FLAGS",JSON.stringify(TIMER_FLAGS));
-
-                // set wakeup timer
-                navigator.plugins.alarm.set(alarmDate, 
-                function(){
-                    // SUCCESS
-                    //navigator.vibrate();
-                    navigator.vibrate(100);
-                    //navigator.notification.vibrate(1000);
-                    //navigator.vibrate([100,100]);
-                }, 
-                function(){
-                    // ERROR
-                    //navigator.vibrate();
-                    navigator.vibrate(500);
-                    //navigator.notification.vibrate(1000);
-                    //navigator.vibrate([100,100,100,100]);
-                    alert("エラー");
-                })
             }
 
         });

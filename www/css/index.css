@@ -16,111 +16,71 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+
+/*
+@import url(//fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700);
+body{
+font-family:"Roboto Slab" , Garamond , "Times New Roman" , "游明朝" , "Yu Mincho" , "游明朝体" , "YuMincho" , "ヒラギノ明朝 Pro W3" , "Hiragino Mincho Pro" , "HiraMinProN-W3" , "HGS明朝E" , "ＭＳ Ｐ明朝" , "MS PMincho" , serif;
+}
+*/
+
+html, body, .app {
+    height: 100%;
+    width: 100%;
 }
 
-body {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#FFFFFF;
-    background-attachment:fixed;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
-    height:100%;
-    margin:0px;
-    padding:0px;
-    text-transform:uppercase;
-    width:100%;
-
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic);
+body{
+    font-family:"Lota","Avenir" , "Open Sans" , "Helvetica Neue" , Helvetica , Arial , Verdana , "Roboto" , "游ゴシック" , "Yu Gothic" , "游ゴシック体" , "YuGothic" , "ヒラギノ角ゴ Pro W3" , "Hiragino Kaku Gothic Pro" , "Meiryo UI" , "メイリオ" , "Meiryo" , "ＭＳ Ｐゴシック" , "MS PGothic" , sans-serif;
+    font-size: 24px;
 }
 
-/* Portrait layout (default) */
-.app {
-
+.title {
+	background: #009826;
+	color: #fff;
+    border-bottom: 1px solid #009826;
+    margin: 0 auto;
+    text-align: center;
+    vertical-align:middle;
+    height: 10%;
 }
-
-/* Portrait layout (default) */
-.bottunline {
-	display: flex;
-	display: -moz-flex;
-	display: -o-flex;
-	display: -webkit-flex;
-	display: -ms-flex;
-	flex-direction: row;
-	-moz-flex-direction: row;
-	-o-flex-direction: row;
-	-webkit-flex-direction: row;
-	-ms-flex-direction: row;
+.timer {
+    height: 10%;
+    font-size: 14px;  
 }
-
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-
-    }
+.rist-menu {
+	list-style: none;
+	overflow: hidden;
+	width: 100%;
+    height: 80%;
+	padding: 0;
 }
-
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
+.rist-menu li {
+	list-style: none;
+	overflow: hidden;
+	width: 100%;
+    height: 10%;
+	margin: 0;
+	padding: 0;
+    border-top: 1px solid #009826;
+	border-bottom: 1px solid #009826;
 }
-
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+.rist-menu li:last-child {
+	border-bottom: 0px;
 }
- 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+.rist-menu li a {
+	display: block;
+	position: relative;
+	z-index: 10;
+	height: 100%;
+	margin: 0;
+	padding: 0px 10px 0px 50px;
+	background: #fff;
+	color: #009826;
+	font-weight: bold;
+	text-decoration: none;
 }
- 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
-}
-
-.site-logo {
- /* サイズ指定 */        
- width:40%;
- height:20%;
- /* 背景色 */
- background-color:#3355FF;
- /* 角を丸くする */
- border-radius: 4%;
- -webkit-border-radius: 4%;
- -moz-border-radius: 4%;
-}
-
-.site-info {
- padding-top:5%; /* 真ん中にまで文字を下ろす */
-}
- 
-.site-logo h1,
-.site-logo p {
- text-align: center; /* 中央寄せ */
- color: #fff; /* 文字を白色に */
- margin: 0; /* h1とpの余白をリセット */
-}
- 
-/* あとは文字サイズや太字を指定 */
-.site-logo h1 {font-size:20px;}
-.site-logo p {font-size:10px; font-weight:bold;}
-.site-logo {
- box-shadow: rgba(113,135,164,.65098) 3px 3px 6px 3px;
- -webkit-box-shadow: rgba(113,135,164,.65098) 3px 3px 6px 3px;
- -moz-box-shadow: rgba(113,135,164,.65098) 3px 3px 6px 3px;
-}
-
-.site-logo:hover {
- /* 変化後の色 */
- background: #FF5533;
+.rist-menu li a:hover {
+	background: #009826;
+    color: #fff;
 }

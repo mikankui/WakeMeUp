@@ -24,7 +24,23 @@
         },
         "de.schchr.cordova.plugin.timers": {
             "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "cordova-plugin-WakeUpMeTimer": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        },
+        "cordova-plugin-app-event": {
+            "PACKAGE_NAME": "com.gmail.mikankui"
+        }
+    }
 }
